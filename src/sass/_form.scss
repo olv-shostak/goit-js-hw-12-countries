@@ -1,0 +1,54 @@
+body {
+  font-size: 25px;
+  background-color: rgb(195, 255, 255);
+}
+
+.form-control {
+  border-radius: 4px;
+  display: block;
+  font-size: 32px;
+  margin: 30px auto;
+  padding: 10px;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.card-list li {
+  display: block;
+  margin: 10px auto;
+}
+
+.card {
+  width: 700px;
+  margin: 0 auto;
+  padding: 10px;
+
+  h1 {
+    text-align: center;
+    
+  }
+}
+
+li {
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: rgba(28, 199, 128, 0.349);
+}
+
+.card-container {
+  display: flex;
+
+  .info {
+    margin: auto;
+  }
+
+  .image {
+    margin-left: 20px;
+  }
+}
