@@ -9,12 +9,11 @@ import '@pnotify/core/dist/BrightTheme.css';
 
 const refs = {
   container: document.querySelector('.js-container'),
-  searchForm: document.querySelector('.search-form'),
   listCard: document.querySelector('.card-list'),
   form: document.querySelector('.form-control'),
 };
 
-refs.searchForm.addEventListener('input', _.debounce(onSearch, 500));
+refs.form.addEventListener('input', _.debounce(onSearch, 500));
 refs.container.addEventListener('click', onClickList);
 
 function onClickList(e) {
@@ -29,6 +28,12 @@ function onClickList(e) {
 
 function onSearch(e) {
   e.preventDefault();
+  let inputValue = e.target.value.trim();
+  if (!inputValue) {
+    refs.form.value = '';
+    errorRequest('Invalid request. Please try again');
+    return;
+  };
   const searchQuery = e.target.value;
   return fetchCountries(searchQuery).then(renderCard);
 }
@@ -38,19 +43,24 @@ function renderCard(country) {
   console.log(country);
   if (country.length === 1) {
     markup = countryCard(country[0]);
-  } else if (country.length < 11) {
+    refs.form.value = '';
+  } else if (country.length <= 10 && country.length >= 2) {
     markup = countryList(country);
+  } else if (country.status === 404) {
+    errorRequest('Nothing found. Please try again');
+    refs.form.value = '';
+    return refs.container.innerHTML = '';
   } else {
-    pnotify();
+    errorRequest('Too many matches found. Please enter a more specific query!');
     return (refs.container.innerHTML = '');
   }
 
   return (refs.container.innerHTML = markup);
 }
 
-function pnotify() {
+function errorRequest(message){
   error({
-    text: 'Too many matches found. Please enter a more specific query!',
-    delay: 3000,
-  });
-}
+    text: message,
+    delay: 2500,  
+  }); 
+};
